@@ -44,6 +44,22 @@ func TestSelectSort(t *testing.T) {
 	}
 }
 
+func TestQuickSort(t *testing.T) {
+    t.Parallel()
+	tests := getCommonSortTestStruct()
+
+	for _, tt := range tests {
+        tt := tt
+        t.Run(tt.name, func(t *testing.T) {
+            t.Parallel()
+            got := QuickSort(tt.array, tt.sort)
+            if !isEqualIntSlice(got, tt.want) {
+                t.Errorf("QuickSort(%v) == %v, want %v", tt.array, got, tt.want)
+            }
+        })
+	}
+}
+
 func TestMergeSort(t *testing.T) {
     t.Parallel()
 	tests := getCommonSortTestStruct()
@@ -60,7 +76,7 @@ func TestMergeSort(t *testing.T) {
 	}
 }
 
-func TestQuickSort(t *testing.T) {
+func TestHeapSort(t *testing.T) {
     t.Parallel()
 	tests := getCommonSortTestStruct()
 
@@ -68,9 +84,9 @@ func TestQuickSort(t *testing.T) {
         tt := tt
         t.Run(tt.name, func(t *testing.T) {
             t.Parallel()
-            got := QuickSort(tt.array, tt.sort)
+            got := HeapSort(tt.array, tt.sort)
             if !isEqualIntSlice(got, tt.want) {
-                t.Errorf("QuickSort(%v) == %v, want %v", tt.array, got, tt.want)
+                t.Errorf("HeapSort(%v) == %v, want %v", tt.array, got, tt.want)
             }
         })
 	}
@@ -136,6 +152,14 @@ func BenchmarkMergeSort(b *testing.B) {
 	for range b.N {
 		array := makeRandomSlice(1000)
 		MergeSort(array, SortAsc)
+	}
+}
+
+func BenchmarkHeapSort(b *testing.B) {
+	b.ResetTimer()
+	for range b.N {
+		array := makeRandomSlice(1000)
+		HeapSort(array, SortAsc)
 	}
 }
 
