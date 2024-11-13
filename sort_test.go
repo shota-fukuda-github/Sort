@@ -94,18 +94,18 @@ func TestHeapSort(t *testing.T) {
 
 func getCommonSortTestStruct() []TestStruct{
 	return []TestStruct {
-		{"配列の要素0: ASC", []int{}, SortAsc, []int{}},
-		{"配列の要素1: ASC", []int{1}, SortAsc, []int{1}},
-		{"配列の要素2: ASC", []int{1,2}, SortAsc, []int{1,2}},
-		{"配列の要素3: ASC", []int{3,2,1}, SortAsc, []int{1,2,3}},
-		{"同一値あり : ASC", []int{3,2,3}, SortAsc, []int{2,3,3}},
-		{"マイナス値 : ASC", []int{-3,0,-5,1}, SortAsc, []int{-5,-3,0,1}},
-		{"配列の要素0: DESC", []int{}, SortDesc, []int{}},
-		{"配列の要素1: DESC", []int{2}, SortDesc, []int{2}},
-		{"配列の要素2: DESC", []int{1,2}, SortDesc, []int{2,1}},
-		{"配列の要素3: DESC", []int{3,2,1}, SortDesc, []int{3,2,1}},
-		{"同一値あり : DESC", []int{3,2,3}, SortDesc, []int{3,3,2}},
-		{"マイナス値 : DESC", []int{-3,0,-5,1}, SortDesc, []int{1,0,-3,-5}},
+		{"配列の要素0: ASC", []int{}, Asc, []int{}},
+		{"配列の要素1: ASC", []int{1}, Asc, []int{1}},
+		{"配列の要素2: ASC", []int{1,2}, Asc, []int{1,2}},
+		{"配列の要素3: ASC", []int{3,2,1}, Asc, []int{1,2,3}},
+		{"同一値あり : ASC", []int{3,2,3}, Asc, []int{2,3,3}},
+		{"マイナス値 : ASC", []int{-3,0,-5,1}, Asc, []int{-5,-3,0,1}},
+		{"配列の要素0: DESC", []int{}, Desc, []int{}},
+		{"配列の要素1: DESC", []int{2}, Desc, []int{2}},
+		{"配列の要素2: DESC", []int{1,2}, Desc, []int{2,1}},
+		{"配列の要素3: DESC", []int{3,2,1}, Desc, []int{3,2,1}},
+		{"同一値あり : DESC", []int{3,2,3}, Desc, []int{3,3,2}},
+		{"マイナス値 : DESC", []int{-3,0,-5,1}, Desc, []int{1,0,-3,-5}},
 	}
 }
 
@@ -126,40 +126,40 @@ func isEqualIntSlice(arrayA, arrayB []int) bool {
 func BenchmarkBubbleSort(b *testing.B) {
 	b.ResetTimer()
 	for range b.N {
-		array := makeRandomSlice(1000)
-		BubbleSort(array, SortAsc)
+		array := makeRandomSlice(10000)
+		BubbleSort(array, Asc)
 	}
 }
 
 func BenchmarkSelectSort(b *testing.B) {
 	b.ResetTimer()
 	for range b.N {
-		array := makeRandomSlice(1000)
-		SelectSort(array, SortAsc)
+		array := makeRandomSlice(10000)
+		SelectSort(array, Asc)
 	}
 }
 
 func BenchmarkQuickSort(b *testing.B) {
 	b.ResetTimer()
 	for range b.N {
-		array := makeRandomSlice(1000)
-		QuickSort(array, SortAsc)
+		array := makeRandomSlice(10000)
+		QuickSort(array, Asc)
 	}
 }
 
 func BenchmarkMergeSort(b *testing.B) {
 	b.ResetTimer()
 	for range b.N {
-		array := makeRandomSlice(1000)
-		MergeSort(array, SortAsc)
+		array := makeRandomSlice(10000)
+		MergeSort(array, Asc)
 	}
 }
 
 func BenchmarkHeapSort(b *testing.B) {
 	b.ResetTimer()
 	for range b.N {
-		array := makeRandomSlice(1000)
-		HeapSort(array, SortAsc)
+		array := makeRandomSlice(10000)
+		HeapSort(array, Asc)
 	}
 }
 
