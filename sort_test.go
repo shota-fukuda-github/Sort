@@ -259,10 +259,10 @@ func BenchmarkHeapSort(b *testing.B) {
 	}
 }
 
-func makeRandomSlice(n int) []float64 {
-	array := make([]float64, n)
+func makeRandomSlice(n int) []int {
+	array := make([]int, n)
 	for range n {
-		array = append(array, rand.Float64())
+		array = append(array, rand.Intn(n*3))
 	}
 	return array
 }
