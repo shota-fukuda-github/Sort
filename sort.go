@@ -5,10 +5,14 @@ import (
     "slices"
 )
 
-type CompareFunc func(int, int) bool
+type Number interface {
+    ~int | ~float64
+}
+
+type CompareFunc[T Number] func(T, T) bool
 
 // バブルソート
-func BubbleSort(array []int, compare CompareFunc) []int {
+func BubbleSort[T Number](array []T, compare CompareFunc[T]) []T {
     for i := range array {
         for j := i+1; j < len(array); j++ {
             if compare(array[i], array[j]) {
@@ -20,7 +24,7 @@ func BubbleSort(array []int, compare CompareFunc) []int {
 }
 
 // 選択ソート
-func SelectSort(array []int, compare CompareFunc) []int {
+func SelectSort[T Number](array []T, compare CompareFunc[T]) []T {
     for i := range array {
         tmp := array[i]
         idx := i
@@ -37,15 +41,15 @@ func SelectSort(array []int, compare CompareFunc) []int {
 }
 
 // クイックソート
-func QuickSort(array []int, compare CompareFunc) []int {
+func QuickSort[T Number](array []T, compare CompareFunc[T]) []T {
     count := len(array)
     if count <= 1 {
         return array
     }
     // 境界は先頭の要素を使用
     pivot := array[0]
-    left  := []int{}
-    right := []int{}
+    left  := []T{}
+    right := []T{}
     for i:= 1; i < count; i++ {
         if compare(pivot, array[i]) {
             left = append(left, array[i])
@@ -60,7 +64,7 @@ func QuickSort(array []int, compare CompareFunc) []int {
 
 
 // マージソート
-func MergeSort(array []int, compare CompareFunc) []int {
+func MergeSort[T Number](array []T, compare CompareFunc[T]) []T {
     count := len(array)
     if count <= 1 {
         return array
@@ -71,7 +75,7 @@ func MergeSort(array []int, compare CompareFunc) []int {
 
     sortedLeft  := MergeSort(left, compare)
     sortedRight := MergeSort(right, compare)
-    sorted := make([]int, 0, count)
+    sorted := make([]T, 0, count)
 
     // 右の要素番号保存
     j := 0
@@ -99,7 +103,7 @@ func MergeSort(array []int, compare CompareFunc) []int {
 
 
 // ヒープソート
-func HeapSort(array []int, compare CompareFunc) []int {
+func HeapSort[T Number](array []T, compare CompareFunc[T]) []T {
     for i := range array {
         current_idx := i
         for current_idx > 0 {
@@ -144,17 +148,17 @@ func HeapSort(array []int, compare CompareFunc) []int {
 }
 
 // 昇順用の関数
-func Desc(num1 int, num2 int) bool {
+func Desc[T Number](num1, num2 T) bool {
     return num1 < num2
 }
 
 // 降順用の関数
-func Asc(num1 int, num2 int) bool {
+func Asc[T Number](num1, num2 T) bool {
     return num1 > num2
 }
 
 // 値の入れ替えを行う
-func swap(num1 *int, num2 *int) {
+func swap[T Number](num1, num2 *T) {
     *num1, *num2 = *num2, *num1
 }
 
