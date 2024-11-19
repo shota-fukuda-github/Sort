@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-type TestStruct[T Number] struct {
+type TestStruct[T Sortable] struct {
 	name  string
 	array []T
 	sort  func(T, T) bool
@@ -31,6 +31,22 @@ func TestIntBubbleSort(t *testing.T) {
 func TestFolatBubbleSort(t *testing.T) {
 	t.Parallel()
 	tests := getCommonFloatSortTestStruct()
+
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			got := BubbleSort(tt.array, tt.sort)
+			if !isEqualSlice(got, tt.want) {
+				t.Errorf("BubbleSort(%v) == %v, want %v", tt.array, got, tt.want)
+			}
+		})
+	}
+}
+
+func TestStringBubbleSort(t *testing.T) {
+	t.Parallel()
+	tests := getCommonStringSortTestStruct()
 
 	for _, tt := range tests {
 		tt := tt
@@ -76,6 +92,22 @@ func TestFloatSelectSort(t *testing.T) {
 	}
 }
 
+func TestStringSelectSort(t *testing.T) {
+	t.Parallel()
+	tests := getCommonStringSortTestStruct()
+
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			got := BubbleSort(tt.array, tt.sort)
+			if !isEqualSlice(got, tt.want) {
+				t.Errorf("SelectSort(%v) == %v, want %v", tt.array, got, tt.want)
+			}
+		})
+	}
+}
+
 func TestIntQuickSort(t *testing.T) {
 	t.Parallel()
 	tests := getCommonIntSortTestStruct()
@@ -101,6 +133,22 @@ func TestFloatQuickSort(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 			got := QuickSort(tt.array, tt.sort)
+			if !isEqualSlice(got, tt.want) {
+				t.Errorf("QuickSort(%v) == %v, want %v", tt.array, got, tt.want)
+			}
+		})
+	}
+}
+
+func TestStringQuickSort(t *testing.T) {
+	t.Parallel()
+	tests := getCommonStringSortTestStruct()
+
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			got := BubbleSort(tt.array, tt.sort)
 			if !isEqualSlice(got, tt.want) {
 				t.Errorf("QuickSort(%v) == %v, want %v", tt.array, got, tt.want)
 			}
@@ -140,6 +188,22 @@ func TestFloatMergeSort(t *testing.T) {
 	}
 }
 
+func TestStringMergeSort(t *testing.T) {
+	t.Parallel()
+	tests := getCommonStringSortTestStruct()
+
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			got := BubbleSort(tt.array, tt.sort)
+			if !isEqualSlice(got, tt.want) {
+				t.Errorf("MergeSort(%v) == %v, want %v", tt.array, got, tt.want)
+			}
+		})
+	}
+}
+
 func TestIntHeapSort(t *testing.T) {
 	t.Parallel()
 	tests := getCommonIntSortTestStruct()
@@ -165,6 +229,22 @@ func TestFloatHeapSort(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 			got := HeapSort(tt.array, tt.sort)
+			if !isEqualSlice(got, tt.want) {
+				t.Errorf("HeapSort(%v) == %v, want %v", tt.array, got, tt.want)
+			}
+		})
+	}
+}
+
+func TestStringHeapSort(t *testing.T) {
+	t.Parallel()
+	tests := getCommonStringSortTestStruct()
+
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			got := BubbleSort(tt.array, tt.sort)
 			if !isEqualSlice(got, tt.want) {
 				t.Errorf("HeapSort(%v) == %v, want %v", tt.array, got, tt.want)
 			}
@@ -203,6 +283,23 @@ func getCommonFloatSortTestStruct() []TestStruct[float64] {
 		{"配列の要素3: DESC", []float64{3.123, 2.123, 1.123}, Desc[float64], []float64{3.123, 2.123, 1.123}},
 		{"同一値あり : DESC", []float64{3.123, 2.123, 3.123}, Desc[float64], []float64{3.123, 3.123, 2.123}},
 		{"マイナス値 : DESC", []float64{-3.4321, 0.43, -5.1, 1.123}, Desc[float64], []float64{1.123, 0.43, -3.4321, -5.1}},
+	}
+}
+
+func getCommonStringSortTestStruct() []TestStruct[string] {
+	return []TestStruct[string]{
+		{"配列の要素0  : ASC", []string{}, Asc[string], []string{}},
+		{"配列の要素1  : ASC", []string{"string"}, Asc[string], []string{"string"}},
+		{"配列の要素2  : ASC", []string{"abc", "def"}, Asc[string], []string{"abc", "def"}},
+		{"配列の要素3  : ASC", []string{"ac", "ab", "aa"}, Asc[string], []string{"aa", "ab", "ac"}},
+		{"同一値あり   : ASC", []string{"run", "ran", "run"}, Asc[string], []string{"ran", "run", "run"}},
+		{"大文字小文字 : ASC", []string{"A", "a", "B", "b"}, Asc[string], []string{"A", "B", "a", "b"}},
+		{"配列の要素0  : DESC", []string{}, Desc[string], []string{}},
+		{"配列の要素1  : DESC", []string{"desc"}, Desc[string], []string{"desc"}},
+		{"配列の要素2  : DESC", []string{"abc", "def"}, Desc[string], []string{"def", "abc"}},
+		{"配列の要素3  : DESC", []string{"yes", "yes!", "yes!!"}, Desc[string], []string{"yes!!", "yes!", "yes"}},
+		{"同一値あり   : DESC", []string{"1", "2", "3"}, Desc[string], []string{"3", "2", "1"}},
+		{"大文字小文字 : DESC", []string{"A", "a", "B", "b"}, Desc[string], []string{"b", "a", "B", "A"}},
 	}
 }
 

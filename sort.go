@@ -4,14 +4,14 @@ import (
 	"slices"
 )
 
-type Number interface {
-	~int | ~float64
+type Sortable interface {
+	~int | ~float64 | string
 }
 
-type CompareFunc[T Number] func(T, T) bool
+type CompareFunc[T Sortable] func(T, T) bool
 
 // バブルソート
-func BubbleSort[T Number](array []T, compare CompareFunc[T]) []T {
+func BubbleSort[T Sortable](array []T, compare CompareFunc[T]) []T {
 	for i := range array {
 		for j := i + 1; j < len(array); j++ {
 			if compare(array[i], array[j]) {
@@ -23,7 +23,7 @@ func BubbleSort[T Number](array []T, compare CompareFunc[T]) []T {
 }
 
 // 選択ソート
-func SelectSort[T Number](array []T, compare CompareFunc[T]) []T {
+func SelectSort[T Sortable](array []T, compare CompareFunc[T]) []T {
 	for i := range array {
 		tmp := array[i]
 		idx := i
@@ -40,7 +40,7 @@ func SelectSort[T Number](array []T, compare CompareFunc[T]) []T {
 }
 
 // クイックソート
-func QuickSort[T Number](array []T, compare CompareFunc[T]) []T {
+func QuickSort[T Sortable](array []T, compare CompareFunc[T]) []T {
 	count := len(array)
 	if count <= 1 {
 		return array
@@ -62,7 +62,7 @@ func QuickSort[T Number](array []T, compare CompareFunc[T]) []T {
 }
 
 // マージソート
-func MergeSort[T Number](array []T, compare CompareFunc[T]) []T {
+func MergeSort[T Sortable](array []T, compare CompareFunc[T]) []T {
 	count := len(array)
 	if count <= 1 {
 		return array
@@ -100,7 +100,7 @@ func MergeSort[T Number](array []T, compare CompareFunc[T]) []T {
 }
 
 // ヒープソート
-func HeapSort[T Number](array []T, compare CompareFunc[T]) []T {
+func HeapSort[T Sortable](array []T, compare CompareFunc[T]) []T {
 	for i := range array {
 		current_idx := i
 		for current_idx > 0 {
@@ -145,17 +145,17 @@ func HeapSort[T Number](array []T, compare CompareFunc[T]) []T {
 }
 
 // 昇順用の関数
-func Desc[T Number](num1, num2 T) bool {
+func Desc[T Sortable](num1, num2 T) bool {
 	return num1 < num2
 }
 
 // 降順用の関数
-func Asc[T Number](num1, num2 T) bool {
+func Asc[T Sortable](num1, num2 T) bool {
 	return num1 > num2
 }
 
 // 値の入れ替えを行う
-func swap[T Number](num1, num2 *T) {
+func swap[T Sortable](num1, num2 *T) {
 	*num1, *num2 = *num2, *num1
 }
 
