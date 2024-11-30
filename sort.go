@@ -99,6 +99,59 @@ func MergeSort[T Sortable](array []T, compare CompareFunc[T]) []T {
 	return sorted
 }
 
+// 並列マージソート(並列でないほうが性能がいいのは内緒)
+func ChannelMergeSort[T Sortable](array []T, compare CompareFunc[T]) []T {
+	if len(array) == 0 {
+		return array
+	}
+	sorted := make([]T, 0, len(array))
+	ch := make(chan T, len(array))
+	go channelMergeSortChild(array, compare, ch)
+	for item := range ch {
+		sorted = append(sorted, item)
+	}
+	return sorted
+}
+func channelMergeSortChild[T Sortable](array []T, compare CompareFunc[T], ch chan T) {
+	defer close(ch)
+	count := len(array)
+	if count == 1 {
+		ch <- array[0]
+		return
+	}
+	divNum := count / 2
+	left := array[:divNum]
+	right := array[divNum:]
+	chLeft := make(chan T, len(left))
+	chRight := make(chan T, len(right))
+	go channelMergeSortChild(left, compare, chLeft)
+	go channelMergeSortChild(right, compare, chRight)
+
+	// 左右から1つ筒要素を取り出して比較する。
+	current_left, left_ok := <-chLeft
+	current_right, right_ok := <-chRight
+	for left_ok && right_ok {
+		if compare(current_left, current_right) {
+			ch <- current_right
+			current_right, right_ok = <-chRight
+		} else {
+			ch <- current_left
+			current_left, left_ok = <-chLeft
+		}
+	}
+	if !left_ok {
+		ch <- current_right
+		for rest_right := range chRight {
+			ch <- rest_right
+		}
+	} else {
+		ch <- current_left
+		for rest_left := range chLeft {
+			ch <- rest_left
+		}
+	}
+}
+
 // ヒープソート
 func HeapSort[T Sortable](array []T, compare CompareFunc[T]) []T {
 	for i := range array {

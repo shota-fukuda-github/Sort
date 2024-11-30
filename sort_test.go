@@ -204,6 +204,54 @@ func TestStringMergeSort(t *testing.T) {
 	}
 }
 
+func TestIntChannelMergeSort(t *testing.T) {
+	t.Parallel()
+	tests := getCommonIntSortTestStruct()
+
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			got := ChannelMergeSort(tt.array, tt.sort)
+			if !isEqualSlice(got, tt.want) {
+				t.Errorf("ChannelMergeSort(%v) == %v, want %v", tt.array, got, tt.want)
+			}
+		})
+	}
+}
+
+func TestFloatChannelMergeSort(t *testing.T) {
+	t.Parallel()
+	tests := getCommonFloatSortTestStruct()
+
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			got := ChannelMergeSort(tt.array, tt.sort)
+			if !isEqualSlice(got, tt.want) {
+				t.Errorf("ChannelMergeSort(%v) == %v, want %v", tt.array, got, tt.want)
+			}
+		})
+	}
+}
+
+func TestStringChannelMergeSort(t *testing.T) {
+	t.Parallel()
+	tests := getCommonStringSortTestStruct()
+
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			got := ChannelMergeSort(tt.array, tt.sort)
+			if !isEqualSlice(got, tt.want) {
+				t.Errorf("ChannelMergeSort(%v) == %v, want %v", tt.array, got, tt.want)
+			}
+		})
+	}
+}
+
 func TestIntHeapSort(t *testing.T) {
 	t.Parallel()
 	tests := getCommonIntSortTestStruct()
@@ -345,6 +393,14 @@ func BenchmarkMergeSort(b *testing.B) {
 	for range b.N {
 		array := makeRandomSlice(10000)
 		MergeSort(array, Asc)
+	}
+}
+
+func BenchmarkChannelMergeSort(b *testing.B) {
+	b.ResetTimer()
+	for range b.N {
+		array := makeRandomSlice(10000)
+		array = ChannelMergeSort(array, Asc)
 	}
 }
 
